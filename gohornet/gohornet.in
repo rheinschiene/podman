@@ -1,4 +1,4 @@
-#include "https://github.com/gohornet/hornet/blob/master/docker/Dockerfile"
+#include "Dockerfile"
 
 USER hornet
 WORKDIR /app
