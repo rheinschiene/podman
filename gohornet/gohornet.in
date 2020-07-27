@@ -1,4 +1,4 @@
-#include "Dockerfile"
+FROM gohornet/hornet:latest
 
 USER hornet
 WORKDIR /app
