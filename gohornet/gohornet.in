@@ -1,0 +1,6 @@
+#include https://github.com/gohornet/hornet/blob/master/docker/Dockerfile
+
+USER hornet
+WORKDIR /app
+RUN mkdir /app/data
+COPY config.json /app
