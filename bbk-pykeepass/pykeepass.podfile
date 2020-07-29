@@ -1,0 +1,16 @@
+FROM python:3
+
+#ARG USER_ID
+#ARG GROUP_ID
+
+#RUN addgroup --gid 1000 user
+#RUN adduser --disabled-password --gecos '' --uid 1000 --gid 1000 user
+#USER user
+
+RUN mkdir -p /home/user/app
+WORKDIR /home/user/app
+
+ADD keepass.py /home/user/app
+
+RUN pip install pykeepass
+

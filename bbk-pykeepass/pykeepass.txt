@@ -1,0 +1,30 @@
+### Build Container
+podman build  -f pykeepass.podfile -t localhost/pykeepass:0.1
+
+### Run Container
+podman run -it --rm --name pykeepass --env PASSWORD='somePassw0rd' -v ./db.kdbx:/home/user/app/db.kdbx localhost/pykeepass:0.1 python keepass.py
+
+### SELinux Permissions
+
+ausearch -m AVC --start 07/29/2020 10:25:00 | audit2allow -a
+ausearch -m AVC --start 07/29/2020 10:25:00 | audit2allow -m pykeepass > pykeepass.te
+
+[root@localhost ~]# cat pykeepass.te 
+
+module pykeepass 1.1;
+
+require {
+	type user_home_t;
+	type container_t;
+	class file { open read write };
+	class file ioctl;
+}
+
+#============= container_t ==============
+allow container_t user_home_t:file { open read write };
+allow container_t user_home_t:file ioctl;
+
+checkmodule -M -m -o pykeepass.mod pykeepass.te
+semodule_package -o pykeepass.pp -m pykeepass.mod
+semodule -i pykeepass.pp
+semodule -l | grep pykeepass
